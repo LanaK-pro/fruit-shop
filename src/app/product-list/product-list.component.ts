@@ -33,24 +33,27 @@ export class ProductListComponent {
   }
 
   addToCart(product: IProduit) {
-    this.updateCart(product);
-    product.quantite = 0;
-  }
+    // Crée une copie a envoyer
+    const cartItem: IProduit = { ...product, quantite: product.quantite };
 
-  onRemoveItem(product: IProduit) {
-    this.cartProduits = this.cartProduits.filter((p) => p.id !== product.id);
-    this.cartUpdated.emit(this.cartProduits);
-  }
+    // Trouver l'index on compare les ids
+    const existingProductIndex = this.cartProduits.findIndex(
+      (item) => item.id === cartItem.id,
+    );
 
-  updateCart(product: IProduit) {
-    const index = this.cartProduits.findIndex((item) => item.id === product.id);
-
-    if (index !== -1) {
-      this.cartProduits[index].quantite += product.quantite;
+    if (existingProductIndex !== -1) {
+      // Si le produit existe j'aditionne juste
+      this.cartProduits[existingProductIndex].quantite += cartItem.quantite;
     } else {
-      this.cartProduits.push(product);
+      // Sinon j'ajoute
+      this.cartProduits.push(cartItem);
     }
 
     this.cartUpdated.emit(this.cartProduits);
+
+    // Reset la quantité affiché
+    product.quantite = 0;
+
+    console.log('Produit ajouté au panier :', cartItem);
   }
 }

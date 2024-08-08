@@ -5,8 +5,8 @@
     </div>
     <div class="col-md-4">
       <app-cart
-        [cartProduits]="cartProduits"
-        (removeItem)="onRemoveItem($event)"
+        [cartIndependantProduits]="cartItems"
+        (removeItem)="onRemoveItemFromCart($event)"
       ></app-cart>
     </div>
   </div>
